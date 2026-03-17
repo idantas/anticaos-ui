@@ -19,9 +19,20 @@ export interface PromptBarProps {
   maxRows?: number;
   /** Whether the input is disabled */
   disabled?: boolean;
-  /** Slot for extra actions (e.g. attach, settings) rendered to the left of submit */
+  /** Slot for extra actions rendered to the left of the textarea */
   actions?: React.ReactNode;
+  /** Apply glassmorphism style (default: true) */
+  glass?: boolean;
 }
+
+const glassStyle: React.CSSProperties = {
+  background:
+    "linear-gradient(10deg, rgba(255,255,255,0.405) 6.7%, rgba(255,255,255,0.72) 97.09%)",
+  backdropFilter: "blur(35.5px)",
+  WebkitBackdropFilter: "blur(35.5px)",
+  boxShadow: "0px 0px 31.1px 0px rgba(0,0,0,0.25)",
+  border: "1px solid #e9e9e9",
+};
 
 export function PromptBar({
   onSubmit,
@@ -32,6 +43,7 @@ export function PromptBar({
   maxRows = 6,
   disabled = false,
   actions,
+  glass = true,
 }: PromptBarProps) {
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -40,7 +52,7 @@ export function PromptBar({
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    const lineHeight = parseInt(getComputedStyle(el).lineHeight, 10) || 24;
+    const lineHeight = parseInt(getComputedStyle(el).lineHeight, 10) || 20;
     const maxHeight = lineHeight * maxRows;
     el.style.height = `${Math.min(el.scrollHeight, maxHeight)}px`;
   }, [maxRows]);
@@ -71,12 +83,15 @@ export function PromptBar({
 
   return (
     <div
-      className={cn(
-        "flex items-end gap-2 rounded-xl border border-border bg-background px-3 py-2 shadow-sm transition-shadow focus-within:ring-2 focus-within:ring-ring",
-        className
-      )}
+      className={cn("rounded-[24px] min-h-[76px] pb-[12px] pl-[16px] pr-[12px] pt-[16px] w-full flex items-end gap-[8px] cursor-text", className)}
+      style={
+        glass
+          ? { background: "rgba(245,245,245,0.69)", backdropFilter: isLoading ? "blur(11px)" : undefined }
+          : undefined
+      }
+      onClick={() => textareaRef.current?.focus()}
     >
-      {actions && <div className="flex items-end pb-1">{actions}</div>}
+      {actions && <div className="flex items-end pb-1 shrink-0">{actions}</div>}
 
       <textarea
         ref={textareaRef}
@@ -86,22 +101,21 @@ export function PromptBar({
         placeholder={placeholder}
         disabled={disabled}
         rows={1}
-        className={cn(
-          "flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-50",
-          "overflow-y-auto py-1 leading-6"
-        )}
-        style={{ maxHeight: `${24 * maxRows}px` }}
+        className="flex-1 bg-transparent text-[14px] text-[#0a0a0a] placeholder:text-[#9c9c9c] border-0 outline-none focus:ring-0 resize-none leading-[20px] py-0 disabled:opacity-50"
+        style={{ maxHeight: `${20 * maxRows}px` }}
+        onClick={(e) => e.stopPropagation()}
       />
 
-      <div className="flex items-end pb-1">
+      <div className="flex items-end pb-0.5 shrink-0">
         {isLoading && onStop ? (
           <button
             type="button"
             onClick={onStop}
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background transition-opacity hover:opacity-80"
+            className="flex h-8 w-8 items-center justify-center rounded-[16px] transition-opacity hover:opacity-80"
+            style={{ background: "#171717" }}
             aria-label="Stop generation"
           >
-            <Xmark className="h-4 w-4" />
+            <Xmark className="h-4 w-4 text-white" />
           </button>
         ) : (
           <button
@@ -109,14 +123,15 @@ export function PromptBar({
             onClick={handleSubmit}
             disabled={!canSubmit}
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-lg transition-all",
+              "flex h-8 w-8 items-center justify-center rounded-[16px] transition-all",
               canSubmit
-                ? "bg-foreground text-background hover:opacity-80"
-                : "bg-muted text-muted-foreground cursor-not-allowed"
+                ? "hover:opacity-80"
+                : "opacity-30 cursor-not-allowed"
             )}
+            style={{ background: "#171717" }}
             aria-label="Send message"
           >
-            <ArrowUp className="h-4 w-4" />
+            <ArrowUp className="h-4 w-4 text-white" />
           </button>
         )}
       </div>
