@@ -73,7 +73,7 @@ export const WithMessages: Story = {
             await new Promise((r) => setTimeout(r, 1500));
             setMessages((m) => [
               ...m,
-              { role: "assistant", content: "Got it! Here's my reply to: "" + msg + """ },
+              { role: "assistant", content: `Got it! Here's my reply to: \u201C${msg}\u201D` },
             ]);
             setLoading(false);
           }}
