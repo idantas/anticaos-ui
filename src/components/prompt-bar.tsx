@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, type KeyboardEvent } from "react";
-import { ArrowUp, X } from "lucide-react";
+import { ArrowUp, Xmark } from "iconoir-react";
 import { cn } from "../lib/utils";
 
 export interface PromptBarProps {
@@ -101,7 +101,7 @@ export function PromptBar({
             className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background transition-opacity hover:opacity-80"
             aria-label="Stop generation"
           >
-            <X className="h-4 w-4" />
+            <Xmark className="h-4 w-4" />
           </button>
         ) : (
           <button
