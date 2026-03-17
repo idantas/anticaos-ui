@@ -41,4 +41,4 @@ export * from "./components/ui/use-mobile";
 // Composite Components
 export * from "./components/prompt-bar";
 export * from "./components/glass-dialog";
-export { glassStyle } from "./components/glass-dialog";
+export * from "./components/blur-dialog";
