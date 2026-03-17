@@ -116,6 +116,7 @@ export function PromptBar({
   };
 
   const canSubmit = value.trim().length > 0 && !isLoading;
+  const hasQuickCommands = Boolean(quickCommands);
   const conversationTitle =
     title ??
     (messages[0]?.content
@@ -283,7 +284,7 @@ export function PromptBar({
             {chatHeader}
             {messagesArea}
             {quickCommands && (
-              <div className="shrink-0 px-3 pb-0 pt-1">{quickCommands}</div>
+              <div className="shrink-0">{quickCommands}</div>
             )}
             <div className="shrink-0 p-[8px]">{inputArea}</div>
           </div>
@@ -304,29 +305,28 @@ export function PromptBar({
       }}
     >
       <motion.div
-        animate={{ height: open ? "min(656px, 88svh)" : 92 }}
+        animate={{ height: open ? "min(656px, 88svh)" : hasQuickCommands ? 126 : 92 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col gap-[8px] overflow-hidden"
         style={{ ...GLASS, borderRadius: "20px", padding: "8px" }}
       >
-        {chatHeader}
-
         <AnimatePresence>
           {open && (
             <motion.div
-              className="flex-1 min-h-0 flex flex-col"
+              className="flex flex-col flex-1 min-h-0 overflow-hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
+              {chatHeader}
               {messagesArea}
             </motion.div>
           )}
         </AnimatePresence>
 
-        {quickCommands && open && (
-          <div className="shrink-0 px-1">{quickCommands}</div>
+        {quickCommands && (
+          <div className="shrink-0">{quickCommands}</div>
         )}
 
         <div className="shrink-0">{inputArea}</div>
