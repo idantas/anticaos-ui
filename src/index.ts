@@ -35,6 +35,20 @@ export * from "./components/ui/textarea";
 export * from "./components/ui/toggle";
 export * from "./components/ui/tooltip";
 
+export * from "./components/ui/accordion";
+export * from "./components/ui/alert-dialog";
+export * from "./components/ui/calendar";
+export * from "./components/ui/chart";
+export * from "./components/ui/context-menu";
+export * from "./components/ui/hover-card";
+export * from "./components/ui/menubar";
+export * from "./components/ui/navigation-menu";
+export * from "./components/ui/pagination";
+export * from "./components/ui/resizable";
+export * from "./components/ui/scroll-area";
+export * from "./components/ui/sidebar";
+export * from "./components/ui/table";
+
 // Hooks
 export * from "./components/ui/use-mobile";
 
