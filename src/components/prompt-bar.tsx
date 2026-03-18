@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUp, Xmark, MultiplePages, Drag } from "iconoir-react";
 import { cn } from "../lib/utils";
+import { glassStyle } from "../lib/glass";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -53,14 +54,6 @@ export interface PromptBarProps {
   className?: string;
 }
 
-const GLASS: React.CSSProperties = {
-  background:
-    "linear-gradient(10deg, rgba(255,255,255,0.405) 6.7%, rgba(255,255,255,0.72) 97.09%)",
-  backdropFilter: "blur(35.5px)",
-  WebkitBackdropFilter: "blur(35.5px)",
-  boxShadow: "0px 0px 31.1px 0px rgba(0,0,0,0.25)",
-  border: "1px solid #e9e9e9",
-};
 
 export function PromptBar({
   open = false,
@@ -142,6 +135,7 @@ export function PromptBar({
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          aria-label="Mensagem"
           className="flex-1 bg-transparent text-[14px] text-[#0a0a0a] placeholder:text-[#9c9c9c] border-0 outline-none focus:ring-0 resize-none leading-[20px] px-[12px] py-0"
           style={{ opacity: isLoading ? 0.5 : 1, maxHeight: "80px" }}
           onClick={(e) => e.stopPropagation()}
@@ -228,6 +222,8 @@ export function PromptBar({
       {messages.map((msg, i) => (
         <div
           key={i}
+          role="article"
+          aria-label={msg.role === "user" ? "Mensagem do usuário" : "Mensagem do assistente"}
           className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}
         >
           {msg.role === "user" ? (
@@ -246,7 +242,11 @@ export function PromptBar({
       ))}
       {isLoading && (
         <div className="flex justify-start">
-          <div className="text-[13px] text-[#9c9c9c] px-1 leading-[1.6] animate-pulse">
+          <div
+            aria-live="polite"
+            role="status"
+            className="text-[13px] text-[#9c9c9c] px-1 leading-[1.6] animate-pulse"
+          >
             Thinking…
           </div>
         </div>
@@ -260,14 +260,18 @@ export function PromptBar({
     return (
       <>
         {/* Resize handle */}
-        <div
-          className="fixed inset-y-0 z-50 w-2 cursor-col-resize group flex items-center justify-center hover:bg-[#0a0a0a]/5 active:bg-[#0a0a0a]/10 transition-colors"
+        <button
+          type="button"
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Redimensionar painel"
+          className="fixed inset-y-0 z-50 w-2 cursor-col-resize group flex items-center justify-center hover:bg-[#0a0a0a]/5 active:bg-[#0a0a0a]/10 transition-colors focus-visible:outline-none focus-visible:bg-[#0a0a0a]/10"
           style={{ right: sidebarWidth }}
         >
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-10 rounded-md bg-white/80 group-hover:bg-white shadow-sm border border-[#e9e9e9] opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none">
             <Drag className="w-3.5 h-3.5 text-[#697282]" />
           </div>
-        </div>
+        </button>
 
         {/* Side panel */}
         <div
@@ -277,14 +281,14 @@ export function PromptBar({
           <div
             className="flex flex-col h-full overflow-hidden"
             style={{
-              ...GLASS,
+              ...glassStyle,
               borderRadius: 0,
             }}
           >
             {chatHeader}
             {messagesArea}
             {quickCommands && (
-              <div className="shrink-0">{quickCommands}</div>
+              <div className="shrink-0" aria-label="Ações rápidas">{quickCommands}</div>
             )}
             <div className="shrink-0 p-[8px]">{inputArea}</div>
           </div>
@@ -308,7 +312,7 @@ export function PromptBar({
         animate={{ height: open ? "min(656px, 88svh)" : hasQuickCommands ? 126 : 92 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col gap-[8px] overflow-hidden"
-        style={{ ...GLASS, borderRadius: "20px", padding: "8px" }}
+        style={{ ...glassStyle, padding: "8px" }}
       >
         <AnimatePresence>
           {open && (
@@ -326,7 +330,7 @@ export function PromptBar({
         </AnimatePresence>
 
         {quickCommands && (
-          <div className="shrink-0">{quickCommands}</div>
+          <div className="shrink-0" aria-label="Ações rápidas">{quickCommands}</div>
         )}
 
         <div className="shrink-0">{inputArea}</div>

@@ -5,31 +5,31 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Xmark } from "iconoir-react";
 import { Drawer, DrawerContent, DrawerTitle } from "./ui/drawer";
+import { glassStyle } from "../lib/glass";
 
-export const glassStyle: React.CSSProperties = {
-  background:
-    "linear-gradient(10deg, rgba(255,255,255,0.405) 6.7%, rgba(255,255,255,0.72) 97.09%)",
-  backdropFilter: "blur(35.5px)",
-  WebkitBackdropFilter: "blur(35.5px)",
-  boxShadow: "0px 0px 31.1px 0px rgba(0,0,0,0.25)",
-  border: "1px solid #e9e9e9",
-  borderRadius: "20px",
-};
+export { glassStyle };
 
 export interface GlassDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
+  description?: string;
   children: React.ReactNode;
   maxWidth?: string;
+  /** Show the default close button in the top-right corner (default: true) */
+  showClose?: boolean;
+  className?: string;
 }
 
 export function GlassDialog({
   open,
   onOpenChange,
   title,
+  description,
   children,
   maxWidth = "520px",
+  showClose = true,
+  className,
 }: GlassDialogProps) {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
@@ -39,17 +39,28 @@ export function GlassDialog({
           style={{ background: "rgba(0,0,0,0.08)" }}
         />
         <DialogPrimitive.Content
-          className="fixed top-[50%] left-[50%] z-50 w-full max-h-[80vh] overflow-y-auto translate-x-[-50%] translate-y-[-50%] p-6 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200 focus:outline-none"
+          className={`fixed top-[50%] left-[50%] z-50 w-full max-h-[80vh] overflow-y-auto translate-x-[-50%] translate-y-[-50%] p-6 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200 focus:outline-none${className ? ` ${className}` : ""}`}
           style={{ ...glassStyle, maxWidth, width: "calc(100vw - 2rem)" }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <DialogPrimitive.Title className="font-semibold text-base text-[#171717] leading-snug">
-              {title}
-            </DialogPrimitive.Title>
-            <DialogPrimitive.Close className="size-5 flex items-center justify-center text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-colors rounded-sm">
-              <Xmark className="w-4 h-4" />
-              <span className="sr-only">Fechar</span>
-            </DialogPrimitive.Close>
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1 min-w-0">
+              <DialogPrimitive.Title className="font-semibold text-base text-[#171717] leading-snug">
+                {title}
+              </DialogPrimitive.Title>
+              {description && (
+                <DialogPrimitive.Description className="text-[14px] text-[#0a0a0a]/60 leading-[1.6] mt-1">
+                  {description}
+                </DialogPrimitive.Description>
+              )}
+            </div>
+            {showClose && (
+              <DialogPrimitive.Close
+                aria-label="Fechar"
+                className="ml-4 shrink-0 size-5 flex items-center justify-center text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-colors rounded-sm"
+              >
+                <Xmark className="w-4 h-4" aria-hidden />
+              </DialogPrimitive.Close>
+            )}
           </div>
           {children}
         </DialogPrimitive.Content>
@@ -84,10 +95,10 @@ export function GlassBottomSheet({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
+            aria-label="Fechar"
             className="size-5 flex items-center justify-center text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-colors rounded-sm"
           >
-            <Xmark className="w-4 h-4" />
-            <span className="sr-only">Fechar</span>
+            <Xmark className="w-4 h-4" aria-hidden />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2 min-h-0">
@@ -103,14 +114,14 @@ export interface GlassPopoverContentProps
   title: string;
   children: React.ReactNode;
   maxWidth?: string;
-  onClose: () => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function GlassPopoverContent({
   title,
   children,
   maxWidth = "520px",
-  onClose,
+  onOpenChange,
   className,
   align = "start",
   side = "bottom",
@@ -128,16 +139,16 @@ export function GlassPopoverContent({
         {...props}
       >
         <div className="flex items-center justify-between mb-4">
-          <span className="font-semibold text-base text-[#171717] leading-snug">
+          <h2 className="font-semibold text-base text-[#171717] leading-snug">
             {title}
-          </span>
+          </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => onOpenChange?.(false)}
+            aria-label="Fechar"
             className="size-5 flex items-center justify-center text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-colors rounded-sm"
           >
-            <Xmark className="w-4 h-4" />
-            <span className="sr-only">Fechar</span>
+            <Xmark className="w-4 h-4" aria-hidden />
           </button>
         </div>
         {children}

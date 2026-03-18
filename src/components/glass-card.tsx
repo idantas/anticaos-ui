@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/utils";
-import { glassStyle } from "./glass-dialog";
+import { glassStyle } from "../lib/glass";
 
 export interface GlassCardProps {
   /** Content rendered inside the white inner container */
@@ -49,6 +49,7 @@ export function GlassCard({
 }: GlassCardProps) {
   return (
     <div
+      role="region"
       style={{ ...glassStyle, padding: "8px" }}
       className={cn("flex flex-col gap-2", className)}
     >

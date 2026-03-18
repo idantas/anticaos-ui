@@ -79,7 +79,7 @@ export function BlurDialog({
               {showClose && (
                 <DialogPrimitive.Close className="ml-4 shrink-0 size-5 flex items-center justify-center text-[#0a0a0a]/40 hover:text-[#0a0a0a]/70 transition-colors rounded-sm">
                   <Xmark className="w-4 h-4" />
-                  <span className="sr-only">Close</span>
+                  <span className="sr-only">Fechar</span>
                 </DialogPrimitive.Close>
               )}
             </div>

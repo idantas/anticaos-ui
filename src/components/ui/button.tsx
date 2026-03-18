@@ -24,13 +24,13 @@ const buttonVariants = cva(
          * Used in FloatingActionBar and PLGNavbar over image/content backgrounds.
          */
         float:
-          "bg-white/70 hover:bg-white border border-white/80 hover:border-white data-[state=open]:bg-white data-[state=open]:border-white backdrop-blur-[16px] text-[#0a0a0a] shadow-none rounded-[20px] focus-visible:ring-0",
+          "bg-white/70 hover:bg-white border border-white/80 hover:border-white data-[state=open]:bg-white data-[state=open]:border-white backdrop-blur-[16px] text-[#0a0a0a] shadow-none rounded-[20px] focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1",
         /**
          * Glass — gradient glass background with backdrop-blur.
          * Used for standalone glass-style buttons and inside glass containers.
          */
         glass:
-          "border border-[#e9e9e9] text-[#0a0a0a] shadow-none rounded-[20px] backdrop-blur-[35px] [background:var(--glass-bg)] hover:brightness-95 focus-visible:ring-0",
+          "border border-[#e9e9e9] text-[#0a0a0a] shadow-none rounded-[20px] backdrop-blur-[35px] [background:var(--glass-bg)] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
