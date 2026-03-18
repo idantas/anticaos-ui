@@ -19,12 +19,26 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        /**
+         * Float — semi-transparent white with backdrop-blur.
+         * Used in FloatingActionBar and PLGNavbar over image/content backgrounds.
+         */
+        float:
+          "bg-white/70 hover:bg-white border border-white/80 hover:border-white data-[state=open]:bg-white data-[state=open]:border-white backdrop-blur-[16px] text-[#0a0a0a] shadow-none rounded-[20px] focus-visible:ring-0",
+        /**
+         * Glass — gradient glass background with backdrop-blur.
+         * Used for standalone glass-style buttons and inside glass containers.
+         */
+        glass:
+          "border border-[#e9e9e9] text-[#0a0a0a] shadow-none rounded-[20px] backdrop-blur-[35px] [background:var(--glass-bg)] hover:brightness-95 focus-visible:ring-0",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         icon: "size-9 rounded-md",
+        /** Icon-lg — for float/glass icon-only buttons (p-3 + w-5 h-5 icon = 44px) */
+        "icon-lg": "size-11 rounded-[20px]",
       },
     },
     defaultVariants: {
