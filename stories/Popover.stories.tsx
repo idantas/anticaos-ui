@@ -42,7 +42,7 @@ export const GlassPopover: StoryObj = {
         </PopoverTrigger>
         <GlassPopoverContent
           title="Glass Popover"
-          onClose={() => setOpen(false)}
+          onOpenChange={setOpen}
           align="start"
         >
           <p className="text-sm text-[#374151]">
